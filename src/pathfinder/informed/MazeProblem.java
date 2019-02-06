@@ -58,7 +58,8 @@ public class MazeProblem {
         this.maze = maze;
         this.rows = maze.length;
         this.cols = (rows == 0) ? 0 : maze[0].length();
-        MazeState foundInitial = null, foundGoal = null, foundKey = null;
+        MazeState foundInitial = null, foundKey = null;
+        ArrayList<MazeState> foundGoal = new ArrayList<MazeState>();
         // TODO FOUND KEY DEAL WITH HER 
         // TODO make goal an array
         // FIXME
@@ -71,7 +72,7 @@ public class MazeProblem {
                 case 'I':
                     foundInitial = new MazeState(col, row); break;
                 case 'G':
-                	GOAL_STATES.add(new MazeState(col, row)); break;
+                	foundGoal.add(new MazeState(col, row)); break;
                 case 'K':
                 	foundKey = new MazeState(col, row); break;
                 case 'M':
@@ -83,6 +84,7 @@ public class MazeProblem {
                 }
             }
         }
+        GOAL_STATES = foundGoal;
         INITIAL_STATE = foundInitial;
         KEY_STATE = foundKey;
     }
@@ -98,7 +100,7 @@ public class MazeProblem {
      * @return Boolean of whether or not the given state is a Goal.
      */
     public boolean isGoal (MazeState state) {
-        return GOAL_STATES.contains(state) && state == getClosestGoal(state);
+        return GOAL_STATES.contains(state);
     }
     
     public boolean isKey (MazeState state) {
@@ -140,11 +142,11 @@ public class MazeProblem {
     }
     
     public MazeState getClosestGoal (MazeState state) {
-    	int lowestCost = getHeuristic(state, this, GOAL_STATES.get(0));
+    	int lowestCost = getHeuristic(state, this, GOAL_STATES.get(0)) + getCost(state);
     	MazeState closestGoal = GOAL_STATES.get(0); 
     	for (int i = 0; i < GOAL_STATES.size(); i++) {
-    		if(lowestCost > getHeuristic(state, this, GOAL_STATES.get(i))) {
-    			lowestCost = getHeuristic(state, this, GOAL_STATES.get(i));
+    		if(lowestCost > getHeuristic(state, this, GOAL_STATES.get(i)) + getCost(state)) {
+    			lowestCost = getHeuristic(state, this, GOAL_STATES.get(i)) + getCost(state);
     			closestGoal = GOAL_STATES.get(i);
     		}
     	}
