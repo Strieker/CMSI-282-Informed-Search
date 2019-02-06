@@ -18,12 +18,13 @@ public class Pathfinder {
     	SearchTreeNode initial = new SearchTreeNode(problem.INITIAL_STATE, null, null, getHeuristic(problem.INITIAL_STATE, problem, problem.KEY_STATE), 0);
     	// THE KEY 
     	// HOW TO HANDLE THE CLOSEST GOAL 
-    	SearchTreeNode key = new SearchTreeNode(problem.KEY_STATE, null, null, getHeuristic(problem.KEY_STATE, problem, problem.GOAL_STATE),0);
+    	MazeState GOAL_STATE = problem.getClosestGoal(problem.KEY_STATE);
+    	SearchTreeNode key = new SearchTreeNode(problem.KEY_STATE, null, null, getHeuristic(problem.KEY_STATE, problem, GOAL_STATE),0);
     	ArrayList<String> pathToKey = searchPath(problem,initial,problem.KEY_STATE);
     	if (pathToKey == null) {
     		return null;
     	} 
-    	ArrayList<String> pathToGoal = searchPath(problem, key, problem.GOAL_STATE);
+    	ArrayList<String> pathToGoal = searchPath(problem, key, GOAL_STATE);
     	if (pathToGoal == null) {
     		return null;
     	} 
@@ -68,43 +69,43 @@ public class Pathfinder {
     
     // TODO refactor in mazeproblem look at the portion where we are going cell by cell 
     // to handle returning the proper node 
-    private static SearchTreeNode searchNode(MazeProblem problem, SearchTreeNode initial, MazeState goalType) {
-    	PriorityQueue<SearchTreeNode> frontier = new PriorityQueue<>(compare);
-    	Set<MazeState> foundValues = new HashSet<>();
-    	frontier.add(initial);
-        while (!frontier.isEmpty()) {
-        	SearchTreeNode expanding = frontier.poll();
-    		foundValues.add(expanding.state);
-    		if(goalType == problem.KEY_STATE) {
-    			if (problem.isKey(expanding.state)) {
-    				return expanding;
-                }
-    		} else if(goalType == problem.GOAL_STATE) {
-    			if (problem.isGoal(expanding.state)) {
-    				return expanding;
-                }
-    		}
-    		Map<String, MazeState> transitions = problem.getTransitions(expanding.state);
-            for (Map.Entry<String, MazeState> transition : transitions.entrySet()) {
-            	SearchTreeNode generated = new SearchTreeNode(
-            		transition.getValue(), 
-            		transition.getKey(), 
-            		expanding, 
-            		getHeuristic(expanding.state, problem, goalType),
-            		getHistory(expanding,transition.getValue(), problem)
-            	);
-            	System.out.println("---------");
-        		System.out.println(Integer.toString(expanding.state.col) + "+" + Integer.toString(expanding.state.row));
-        		System.out.println(getHistory(expanding,transition.getValue(), problem));
-        		System.out.println(getHeuristic(expanding.state, problem, goalType));
-            	System.out.println("---------");
-            	if (!foundValues.contains(generated.state)){
-            		frontier.add(generated);
-            	}
-            }
-        }
-        return null;
-    }
+//    private static SearchTreeNode searchNode(MazeProblem problem, SearchTreeNode initial, MazeState goalType) {
+//    	PriorityQueue<SearchTreeNode> frontier = new PriorityQueue<>(compare);
+//    	Set<MazeState> foundValues = new HashSet<>();
+//    	frontier.add(initial);
+//        while (!frontier.isEmpty()) {
+//        	SearchTreeNode expanding = frontier.poll();
+//    		foundValues.add(expanding.state);
+//    		if(goalType == problem.KEY_STATE) {
+//    			if (problem.isKey(expanding.state)) {
+//    				return expanding;
+//                }
+//    		} else if(problem.GOAL_STATES.contains(goalType)) {
+//    			if (problem.isGoal(expanding.state)) {
+//    				return expanding;
+//                }
+//    		}
+//    		Map<String, MazeState> transitions = problem.getTransitions(expanding.state);
+//            for (Map.Entry<String, MazeState> transition : transitions.entrySet()) {
+//            	SearchTreeNode generated = new SearchTreeNode(
+//            		transition.getValue(), 
+//            		transition.getKey(), 
+//            		expanding, 
+//            		getHeuristic(expanding.state, problem, goalType),
+//            		getHistory(expanding,transition.getValue(), problem)
+//            	);
+//            	System.out.println("---------");
+//        		System.out.println(Integer.toString(expanding.state.col) + "+" + Integer.toString(expanding.state.row));
+//        		System.out.println(getHistory(expanding,transition.getValue(), problem));
+//        		System.out.println(getHeuristic(expanding.state, problem, goalType));
+//            	System.out.println("---------");
+//            	if (!foundValues.contains(generated.state)){
+//            		frontier.add(generated);
+//            	}
+//            }
+//        }
+//        return null;
+//    }
     
     private static ArrayList<String> searchPath(MazeProblem problem, SearchTreeNode initial, MazeState goalType) {
     	PriorityQueue<SearchTreeNode> frontier = new PriorityQueue<>(compare);
@@ -117,7 +118,7 @@ public class Pathfinder {
     			if (problem.isKey(expanding.state)) {
     				return getPath(expanding);
                 }
-    		} else if(goalType == problem.GOAL_STATE) {
+    		} else if(problem.GOAL_STATES.contains(goalType)) {
     			if (problem.isGoal(expanding.state)) {
     				return getPath(expanding);
                 }

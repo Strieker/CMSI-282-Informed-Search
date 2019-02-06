@@ -2,6 +2,7 @@ package pathfinder.informed;
 
 import java.util.Map;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 
 /**
@@ -70,7 +71,7 @@ public class MazeProblem {
                 case 'I':
                     foundInitial = new MazeState(col, row); break;
                 case 'G':
-                    foundGoal = new MazeState(col, row); break;
+                	GOAL_STATES.add(new MazeState(col, row)); break;
                 case 'K':
                 	foundKey = new MazeState(col, row); break;
                 case 'M':
@@ -83,7 +84,6 @@ public class MazeProblem {
             }
         }
         INITIAL_STATE = foundInitial;
-        GOAL_STATES.add(foundGoal); // TODO multiple goals 
         KEY_STATE = foundKey;
     }
 
@@ -98,12 +98,14 @@ public class MazeProblem {
      * @return Boolean of whether or not the given state is a Goal.
      */
     public boolean isGoal (MazeState state) {
-        return GOAL_STATES.contains(state);
+        return GOAL_STATES.contains(state) && state == getClosestGoal(state);
     }
     
     public boolean isKey (MazeState state) {
         return state.equals(KEY_STATE);
     }
+    
+    
 
     // Cost Function 
     // -----------------------------------------------------------------------------
@@ -127,6 +129,26 @@ public class MazeProblem {
     	}
         return 3;
     	
+    }
+    
+    private static int getHeuristic(MazeState current, MazeProblem problem, MazeState goal) {
+    	int x1 = current.col;
+    	int y1 = current.row;
+    	int x2 = goal.col;
+    	int y2 = goal.row;
+    	return Math.abs(x1 - x2) + Math.abs(y1 - y2);
+    }
+    
+    public MazeState getClosestGoal (MazeState state) {
+    	int lowestCost = getHeuristic(state, this, GOAL_STATES.get(0));
+    	MazeState closestGoal = GOAL_STATES.get(0); 
+    	for (int i = 0; i < GOAL_STATES.size(); i++) {
+    		if(lowestCost > getHeuristic(state, this, GOAL_STATES.get(i))) {
+    			lowestCost = getHeuristic(state, this, GOAL_STATES.get(i));
+    			closestGoal = GOAL_STATES.get(i);
+    		}
+    	}
+    	return closestGoal;
     }
     
     /**
