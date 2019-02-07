@@ -14,6 +14,11 @@ import java.util.*;
 public class Pathfinder {
     
     public static ArrayList<String> solve (MazeProblem problem) {
+    	if (problem.KEY_STATE == null) {
+    		return null;
+    	} else if (problem.GOAL_STATES.size()  == 0) {
+    		return null;
+    	}
     	ArrayList<String> path = new ArrayList<String>();
     	SearchTreeNode initial = new SearchTreeNode(problem.INITIAL_STATE, null, null, getHeuristic(problem.INITIAL_STATE, problem, problem.KEY_STATE), 0);
     	// THE KEY 
@@ -68,6 +73,11 @@ public class Pathfinder {
     }
     
     private static ArrayList<String> searchPath(MazeProblem problem, SearchTreeNode initial, MazeState goalType) {
+    	if (problem.KEY_STATE == null) {
+    		return null;
+    	} else if (problem.GOAL_STATES.size()  == 0) {
+    		return null;
+    	}
     	PriorityQueue<SearchTreeNode> frontier = new PriorityQueue<>(compare);
     	Set<MazeState> foundValues = new HashSet<>();
     	frontier.add(initial);
