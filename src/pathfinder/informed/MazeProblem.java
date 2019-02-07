@@ -142,6 +142,9 @@ public class MazeProblem {
     }
     
     public MazeState getClosestGoal (MazeState state) {
+    	if (GOAL_STATES.size() == 0) {
+    		return null;
+    	}
     	int lowestCost = getHeuristic(state, this, GOAL_STATES.get(0)) + getCost(state);
     	MazeState closestGoal = GOAL_STATES.get(0); 
     	for (int i = 0; i < GOAL_STATES.size(); i++) {

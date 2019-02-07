@@ -67,50 +67,12 @@ public class Pathfinder {
     	return Math.abs(x1 - x2) + Math.abs(y1 - y2);
     }
     
-    // TODO refactor in mazeproblem look at the portion where we are going cell by cell 
-    // to handle returning the proper node 
-//    private static SearchTreeNode searchNode(MazeProblem problem, SearchTreeNode initial, MazeState goalType) {
-//    	PriorityQueue<SearchTreeNode> frontier = new PriorityQueue<>(compare);
-//    	Set<MazeState> foundValues = new HashSet<>();
-//    	frontier.add(initial);
-//        while (!frontier.isEmpty()) {
-//        	SearchTreeNode expanding = frontier.poll();
-//    		foundValues.add(expanding.state);
-//    		if(goalType == problem.KEY_STATE) {
-//    			if (problem.isKey(expanding.state)) {
-//    				return expanding;
-//                }
-//    		} else if(problem.GOAL_STATES.contains(goalType)) {
-//    			if (problem.isGoal(expanding.state)) {
-//    				return expanding;
-//                }
-//    		}
-//    		Map<String, MazeState> transitions = problem.getTransitions(expanding.state);
-//            for (Map.Entry<String, MazeState> transition : transitions.entrySet()) {
-//            	SearchTreeNode generated = new SearchTreeNode(
-//            		transition.getValue(), 
-//            		transition.getKey(), 
-//            		expanding, 
-//            		getHeuristic(expanding.state, problem, goalType),
-//            		getHistory(expanding,transition.getValue(), problem)
-//            	);
-//            	System.out.println("---------");
-//        		System.out.println(Integer.toString(expanding.state.col) + "+" + Integer.toString(expanding.state.row));
-//        		System.out.println(getHistory(expanding,transition.getValue(), problem));
-//        		System.out.println(getHeuristic(expanding.state, problem, goalType));
-//            	System.out.println("---------");
-//            	if (!foundValues.contains(generated.state)){
-//            		frontier.add(generated);
-//            	}
-//            }
-//        }
-//        return null;
-//    }
-    
     private static ArrayList<String> searchPath(MazeProblem problem, SearchTreeNode initial, MazeState goalType) {
     	PriorityQueue<SearchTreeNode> frontier = new PriorityQueue<>(compare);
     	Set<MazeState> foundValues = new HashSet<>();
     	frontier.add(initial);
+    	System.out.println(Integer.toString(initial.state.col) +  Integer.toString(initial.state.row));
+    	System.out.println();
         while (!frontier.isEmpty()) {
         	SearchTreeNode expanding = frontier.poll();
     		foundValues.add(expanding.state);
@@ -134,8 +96,8 @@ public class Pathfinder {
             	);
             	System.out.println("---------");
         		System.out.println(Integer.toString(expanding.state.col) + "+" + Integer.toString(expanding.state.row));
-        		System.out.println(getHistory(expanding,transition.getValue(), problem));
-        		System.out.println(getHeuristic(expanding.state, problem, goalType));
+        		System.out.println("history " + Integer.toString(getHistory(expanding,transition.getValue(), problem)));
+        		System.out.println("heuristic " + Integer.toString(getHeuristic(expanding.state, problem, goalType)));
             	System.out.println("---------");
             	if (!foundValues.contains(generated.state)){
             		frontier.add(generated);
