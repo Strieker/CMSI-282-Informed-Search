@@ -84,8 +84,6 @@ public class PathfinderTests {
         assertNull(solution); // Ensure that Pathfinder knows when there's no solution
     }
     
-    // TODO no key 
-    // TODO goal or key is unreachable 
     @Test
     public void testPathfinder_t5() {
         String[] maze = {
@@ -151,7 +149,6 @@ public class PathfinderTests {
       assertEquals(10, result[1]); // Ensure that the solution is optimal
     }
     
-    // TODO NO KEY 
     @Test
     public void testPathfinder_t8() {
         String[] maze = {
@@ -166,7 +163,6 @@ public class PathfinderTests {
         assertNull(solution); // Ensure that Pathfinder knows when there's no solution
     }
     
-    // TODO NO GOAL 
     @Test
     public void testPathfinder_t9() {
         String[] maze = {

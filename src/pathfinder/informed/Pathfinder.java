@@ -6,11 +6,7 @@ import java.util.*;
 /**
  * Maze Pathfinding algorithm that implements informed, depth-first, A* search.
  */
-// MADE A SEARCH METHOD TO FIX THE ISSUE, SINCE BREAKING IT UP INTO 2 METHODS FOR FOUNDKEY AND FOUNDGOAL WAS
-// A TON OF REPEATED CODE AND IT WAS COMPLETELY GIVING ME THE WRONG ANSWERS BUT NOW FOR SOLVE PATH ISN'T UPDATING 
-// IM RETURNING A TREE NODE AND TRYING TO UPDATE THE PATH 
-// I THINK IT'S NOT DEAL WITH WALLS 
-// AND ALSO I THINK IT'SFINDING THE KEY BUT STARTING FROM THE WRONG PLACE AFTER THAT 
+
 public class Pathfinder {
     
     public static ArrayList<String> solve (MazeProblem problem) {
@@ -21,8 +17,6 @@ public class Pathfinder {
     	}
     	ArrayList<String> path = new ArrayList<String>();
     	SearchTreeNode initial = new SearchTreeNode(problem.INITIAL_STATE, null, null, getHeuristic(problem.INITIAL_STATE, problem, problem.KEY_STATE), 0);
-    	// THE KEY 
-    	// HOW TO HANDLE THE CLOSEST GOAL 
     	MazeState GOAL_STATE = problem.getClosestGoal(problem.KEY_STATE);
     	SearchTreeNode key = new SearchTreeNode(problem.KEY_STATE, null, null, getHeuristic(problem.KEY_STATE, problem, GOAL_STATE),0);
     	ArrayList<String> pathToKey = searchPath(problem,initial,problem.KEY_STATE);
@@ -34,8 +28,6 @@ public class Pathfinder {
     		return null;
     	} 
     	System.out.println(pathToKey.toString());
-    	// MAKE A PROPER SEARCH TREE NODE FOR JUST THE KEY 
-    	// IF YOU STORE THE GOALS INTO A SET, THEN THE HEURISTIC CAN FIGURE OUT WHAT THE CLOSEST GOAL IS 
     	System.out.println(pathToGoal.toString());
     	for (int i = 0; i < pathToGoal.size(); i++) {
     		pathToKey.add(pathToGoal.get(i));
@@ -47,8 +39,6 @@ public class Pathfinder {
     private static int getHistory(SearchTreeNode parent, MazeState current, MazeProblem problem) {
     	return parent.history + problem.getCost(current);
     }
-
-    
     
     private static Comparator<SearchTreeNode> compare = (n1,n2) -> {
     	return n1.evaluate() - n2.evaluate();
@@ -65,11 +55,7 @@ public class Pathfinder {
    
    // TODO kill problem as a parameter for getHeuristic 
     private static int getHeuristic(MazeState current, MazeProblem problem, MazeState goal) {
-    	int x1 = current.col;
-    	int y1 = current.row;
-    	int x2 = goal.col;
-    	int y2 = goal.row;
-    	return Math.abs(x1 - x2) + Math.abs(y1 - y2);
+    	return Math.abs(current.col - goal.col) + Math.abs(current.row - goal.row);
     }
     
     private static ArrayList<String> searchPath(MazeProblem problem, SearchTreeNode initial, MazeState goalType) {
