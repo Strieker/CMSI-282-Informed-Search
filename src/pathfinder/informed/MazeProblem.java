@@ -1,9 +1,6 @@
 package pathfinder.informed;
 
-import java.util.Map;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
+import java.util.*;
 
 /**
  * Specifies the Maze Grid pathfinding problem including the actions, transitions,
@@ -124,13 +121,20 @@ public class MazeProblem {
      * @return Integer equating to the total cost to move to the given tile 
      */
     public int getCost (MazeState state) {
-    	//TODO cleanliness = switch 
     	char tileType = maze[state.row].charAt(state.col);
-    	if (tileType == 'G' || tileType == 'K' || tileType == 'I' || tileType == '.') {
-    		return 1;
-    	}
-        return 3;
-    	
+    	int cost = 0;
+    	switch (tileType) {
+        case 'G':
+        case 'K':
+        case '.':
+        case 'I':
+            cost = 1; break;
+        case 'M':
+            cost = 3; break;
+        default:
+            break;
+        } 
+    	return cost;
     }
     
     /**
