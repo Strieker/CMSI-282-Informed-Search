@@ -116,13 +116,13 @@ public class Pathfinder {
     		return null;
     	}
     	PriorityQueue<SearchTreeNode> frontier = new PriorityQueue<>(compare);
-    	Set<MazeState> foundValues = new HashSet<>();
+    	Set<MazeState> graveyard = new HashSet<>();
     	frontier.add(initial);
     	System.out.println(Integer.toString(initial.state.col) +  Integer.toString(initial.state.row));
     	System.out.println();
         while (!frontier.isEmpty()) {
         	SearchTreeNode expanding = frontier.poll();
-    		foundValues.add(expanding.state);
+        	graveyard.add(expanding.state);
     		if(goalType == problem.KEY_STATE) {
     			if (problem.isKey(expanding.state)) {
     				return getPath(expanding);
@@ -146,7 +146,7 @@ public class Pathfinder {
         		System.out.println("history " + Integer.toString(getHistory(expanding,transition.getValue(), problem)));
         		System.out.println("heuristic " + Integer.toString(getHeuristic(expanding.state, goalType)));
             	System.out.println("---------");
-            	if (!foundValues.contains(generated.state)){
+            	if (!graveyard.contains(generated.state)){
             		frontier.add(generated);
             	}
             }
@@ -154,15 +154,23 @@ public class Pathfinder {
         return null;
     }
     
-    public static MazeState getClosestGoal (MazeState state, MazeProblem problem) {
+    /**
+     * Finds the closest goal in the list of Goal States based on the current state's history by calling 
+     * its getCost function. 
+     *  
+     * @param problem A MazeProblem that specifies the maze, actions, transitions, and the current MazeState
+     * @return An ArrayList of Strings representing actions that lead from the initial to
+     * the goal state, of the format: ["R", "R", "L", ...]
+     */
+    public static MazeState getClosestGoal (MazeState current, MazeProblem problem) {
     	if (problem.GOAL_STATES.size() == 0) {
     		return null;
     	}
-    	int lowestCost = getHeuristic(state, problem.GOAL_STATES.get(0)) + problem.getCost(state);
+    	int lowestCost = getHeuristic(current, problem.GOAL_STATES.get(0)) + problem.getCost(current);
     	MazeState closestGoal = problem.GOAL_STATES.get(0); 
     	for (int i = 0; i < problem.GOAL_STATES.size(); i++) {
-    		if(lowestCost > getHeuristic(state, problem.GOAL_STATES.get(i)) + problem.getCost(state)) {
-    			lowestCost = getHeuristic(state, problem.GOAL_STATES.get(i)) + problem.getCost(state);
+    		if(lowestCost > getHeuristic(current, problem.GOAL_STATES.get(i)) + problem.getCost(current)) {
+    			lowestCost = getHeuristic(current, problem.GOAL_STATES.get(i)) + problem.getCost(current);
     			closestGoal = problem.GOAL_STATES.get(i);
     		}
     	}
@@ -179,7 +187,6 @@ class SearchTreeNode {
     MazeState state;
     String action;
     SearchTreeNode parent;
-//    int history;
     int heuristic;
     int history;
     
@@ -189,19 +196,23 @@ class SearchTreeNode {
      * @param state The MazeState (row, col) that this node represents.
      * @param action The action that *led to* this state / node.
      * @param parent Reference to parent SearchTreeNode in the Search Tree.
+     * @param the heuristic cost of the current node. 
+     * @param the  history cost of the current node.
      */
-    
-    public int evaluate() {
-    	return history + heuristic;
-    }
-    
-    
     SearchTreeNode (MazeState state, String action, SearchTreeNode parent, int heuristic, int history) {
         this.state = state;
         this.action = action;
         this.parent = parent;
         this.heuristic = heuristic;
         this.history = history;
+    }
+    
+    /**
+     * Returns the total evaluation cost of a given TreeNode object based 
+     * on its given history and heuristic  costs.
+     */
+    public int evaluate() {
+    	return history + heuristic;
     }
     
 }

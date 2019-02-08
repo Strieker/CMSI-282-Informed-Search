@@ -19,21 +19,15 @@ public class PathfinderTests {
             "X.X.XGX",
             "XXXXXXX"
         };
-//        System.out.println(new MazeProblem(maze));
         MazeProblem prob = new MazeProblem(maze);
         ArrayList<String> solution = Pathfinder.solve(prob);
-        
-        // result will be a 2-tuple (isSolution, cost) where
-        // - isSolution = 0 if it is not, 1 if it is
-        // - cost = numerical cost of proposed solution
         int[] result = prob.testSolution(solution);
         System.out.println(solution.toString());
 
-        assertEquals(1, result[0]); // Test that result is a solution
-        assertEquals(6, result[1]); // Ensure that the solution is optimal
+        assertEquals(1, result[0]);
+        assertEquals(6, result[1]);
     }
     
-    // NOT FINDING MOST OPTIMAL SOLUTION FOR THE GOAL STATE 
     @Test
     public void testPathfinder_t1() {
         String[] maze = {
@@ -48,10 +42,10 @@ public class PathfinderTests {
         int[] result = prob.testSolution(solution);
         System.out.println(solution.toString());
 
-        assertEquals(1, result[0]);  // Test that result is a solution
-        assertEquals(14, result[1]); // Ensure that the solution is optimal
+        assertEquals(1, result[0]);
+        assertEquals(14, result[1]);
     }
-    // HOW TO HANDLE MULTIPLE GOAL STATES 
+
     @Test
     public void testPathfinder_t2() {
         String[] maze = {
@@ -66,8 +60,8 @@ public class PathfinderTests {
         
         int[] result = prob.testSolution(solution);
         System.out.println(solution.toString());
-        assertEquals(1, result[0]);  // Test that result is a solution
-        assertEquals(10, result[1]); // Ensure that the solution is optimal
+        assertEquals(1, result[0]); 
+        assertEquals(10, result[1]);
     }
     
     @Test
@@ -81,7 +75,7 @@ public class PathfinderTests {
         };
         MazeProblem prob = new MazeProblem(maze);
         ArrayList<String> solution = Pathfinder.solve(prob);
-        assertNull(solution); // Ensure that Pathfinder knows when there's no solution
+        assertNull(solution); 
     }
     
     @Test
@@ -95,7 +89,7 @@ public class PathfinderTests {
         };
         MazeProblem prob = new MazeProblem(maze);
         ArrayList<String> solution = Pathfinder.solve(prob);
-        assertNull(solution); // Ensure that Pathfinder knows when there's no solution
+        assertNull(solution);
     }
     
     @Test
@@ -109,7 +103,7 @@ public class PathfinderTests {
           };
             MazeProblem prob = new MazeProblem(maze);
             ArrayList<String> solution = Pathfinder.solve(prob);
-            assertNull(solution); // Ensure that Pathfinder knows when there's no solution
+            assertNull(solution);
     }
 
     @Test
@@ -126,8 +120,8 @@ public class PathfinderTests {
   
       int[] result = prob.testSolution(solution);
       System.out.println(solution.toString());
-      assertEquals(1, result[0]);  // Test that result is a solution
-      assertEquals(5, result[1]); // Ensure that the solution is optimal
+      assertEquals(1, result[0]);
+      assertEquals(5, result[1]); 
     }
     
 
@@ -145,8 +139,8 @@ public class PathfinderTests {
   
       int[] result = prob.testSolution(solution);
       System.out.println(solution.toString());
-      assertEquals(1, result[0]);  // Test that result is a solution
-      assertEquals(10, result[1]); // Ensure that the solution is optimal
+      assertEquals(1, result[0]);
+      assertEquals(10, result[1]); 
     }
     
     @Test
@@ -160,7 +154,7 @@ public class PathfinderTests {
         };
         MazeProblem prob = new MazeProblem(maze);
         ArrayList<String> solution = Pathfinder.solve(prob);
-        assertNull(solution); // Ensure that Pathfinder knows when there's no solution
+        assertNull(solution); 
     }
     
     @Test
@@ -174,7 +168,7 @@ public class PathfinderTests {
         };
         MazeProblem prob = new MazeProblem(maze);
         ArrayList<String> solution = Pathfinder.solve(prob);
-        assertNull(solution); // Ensure that Pathfinder knows when there's no solution
+        assertNull(solution);
     }
     
     @Test
@@ -188,7 +182,7 @@ public class PathfinderTests {
         };
         MazeProblem prob = new MazeProblem(maze);
         ArrayList<String> solution = Pathfinder.solve(prob);
-        assertNull(solution); // Ensure that Pathfinder knows when there's no solution
+        assertNull(solution); 
     }
     
     @Test
@@ -204,8 +198,8 @@ public class PathfinderTests {
         ArrayList<String> solution = Pathfinder.solve(prob);
         int[] result = prob.testSolution(solution);
         System.out.println(solution.toString());
-        assertEquals(1, result[0]);  // Test that result is a solution
-        assertEquals(7, result[1]); // Ensure that the solution is optimal
+        assertEquals(1, result[0]); 
+        assertEquals(7, result[1]); 
     }
     
     @Test
@@ -219,7 +213,7 @@ public class PathfinderTests {
         };
         MazeProblem prob = new MazeProblem(maze);
         ArrayList<String> solution = Pathfinder.solve(prob);
-        assertNull(solution); // Ensure that Pathfinder knows when there's no solution
+        assertNull(solution); 
     }
     
     @Test
@@ -233,7 +227,161 @@ public class PathfinderTests {
         };
         MazeProblem prob = new MazeProblem(maze);
         ArrayList<String> solution = Pathfinder.solve(prob);
-        assertNull(solution); // Ensure that Pathfinder knows when there's no solution
+        assertNull(solution); 
+    }
+    
+    @Test
+    public void testPathfinder_t14() {
+        String[] maze = {
+            "XXXXXXX",
+            "XXXXXXX",
+            "XXXXXXX",
+            "XXXXXXX",
+            "XXXXXXX"
+        };
+        MazeProblem prob = new MazeProblem(maze);
+        ArrayList<String> solution = Pathfinder.solve(prob);
+        assertNull(solution); 
+    }
+    
+    @Test
+    public void testPathfinder_t15() {
+        String[] maze = {
+            "XXXXXXX",
+            "XXXXXXX",
+            "XXXKGXX",
+            "XXXXXXX",
+            "XXXXXXX"
+        };
+        MazeProblem prob = new MazeProblem(maze);
+        ArrayList<String> solution = Pathfinder.solve(prob);
+        assertNull(solution);
+    }
+    
+    @Test
+    public void testPathfinder_t16() {
+        String[] maze = {
+            ".......",
+            ".......",
+            ".......",
+            ".......",
+            "......."
+        };
+        MazeProblem prob = new MazeProblem(maze);
+        ArrayList<String> solution = Pathfinder.solve(prob);
+        assertNull(solution);
+    }
+    
+    @Test
+    public void testPathfinder_t17() {
+        String[] maze = {
+            "GGGGGGG",
+            "GGGGGGG",
+            "GGGGGGG",
+            "GGGGGGG",
+            "GGGGGGG"
+        };
+        MazeProblem prob = new MazeProblem(maze);
+        ArrayList<String> solution = Pathfinder.solve(prob);
+        assertNull(solution); 
+    }
+    
+    @Test
+    public void testPathfinder_t18() {
+        String[] maze = {
+            "KKKKKKK",
+            "KKKKKKK",
+            "KKKKKKK",
+            "KKKKKKK",
+            "KKKKKKK"
+        };
+        MazeProblem prob = new MazeProblem(maze);
+        ArrayList<String> solution = Pathfinder.solve(prob);
+        assertNull(solution); 
+    }
+    
+    @Test
+    public void testPathfinder_t19() {
+        String[] maze = {
+            "IKKKKKK",
+            "KKKKKKK",
+            "KKKKKKK",
+            "KKKKKKK",
+            "KKKKKKG"
+        };
+        MazeProblem prob = new MazeProblem(maze);
+        ArrayList<String> solution = Pathfinder.solve(prob);
+        assertNull(solution); 
+    }
+    
+    @Test
+    public void testPathfinder_t20() {
+        String[] maze = {
+            "IIIIIII",
+            "IIIIIII",
+            "IIIIIII",
+            "IIIIIII",
+            "IIIIIKG"
+        };
+        MazeProblem prob = new MazeProblem(maze);
+        ArrayList<String> solution = Pathfinder.solve(prob);
+        assertNull(solution); 
+    }
+    
+    @Test
+    public void testPathfinder_t21() {
+        String[] maze = {
+            "IIIIIII",
+            "IIIIIII",
+            "IIIIIII",
+            "IIIIIII",
+            "IIIIIII"
+        };
+        MazeProblem prob = new MazeProblem(maze);
+        ArrayList<String> solution = Pathfinder.solve(prob);
+        assertNull(solution); 
+    }
+    
+    @Test
+    public void testPathfinder_t22() {
+        String[] maze = {
+            "IGIGIGI",
+            "IGIGIGI",
+            "IGIGIGI",
+            "IGIGIGI",
+            "IGIGIGI"
+        };
+        MazeProblem prob = new MazeProblem(maze);
+        ArrayList<String> solution = Pathfinder.solve(prob);
+        assertNull(solution);
+    }
+    
+    @Test
+    public void testPathfinder_t23() {
+        String[] maze = {
+            "IIIIIII",
+            "IIIIIII",
+            "IIIIIII",
+            "IIIIIII",
+            "IIIIIIK"
+        };
+        MazeProblem prob = new MazeProblem(maze);
+        ArrayList<String> solution = Pathfinder.solve(prob);
+        assertNull(solution); 
+    }
+    
+    @Test
+    public void testPathfinder_t24() {
+        String[] maze = {
+            "IKIKIKI",
+            "IKIKIKI",
+            "IKIKIKI",
+            "IKIKIKI",
+            "IKIKIKI"
+        };
+        MazeProblem prob = new MazeProblem(maze);
+        ArrayList<String> solution = Pathfinder.solve(prob);
+        assertNull(solution);
     }
     
 }
