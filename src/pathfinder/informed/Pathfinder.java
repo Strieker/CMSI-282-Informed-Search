@@ -1,3 +1,5 @@
+// Sage Strieker
+
 package pathfinder.informed;
 
 import java.util.*;
