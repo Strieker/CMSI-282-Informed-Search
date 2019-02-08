@@ -17,7 +17,7 @@ public class Pathfinder {
     	}
     	ArrayList<String> path = new ArrayList<String>();
     	SearchTreeNode initial = new SearchTreeNode(problem.INITIAL_STATE, null, null, getHeuristic(problem.INITIAL_STATE, problem, problem.KEY_STATE), 0);
-    	MazeState GOAL_STATE = problem.getClosestGoal(problem.KEY_STATE);
+    	MazeState GOAL_STATE = getClosestGoal(problem.KEY_STATE, problem);
     	SearchTreeNode key = new SearchTreeNode(problem.KEY_STATE, null, null, getHeuristic(problem.KEY_STATE, problem, GOAL_STATE),0);
     	ArrayList<String> pathToKey = searchPath(problem,initial,problem.KEY_STATE);
     	if (pathToKey == null) {
@@ -101,6 +101,21 @@ public class Pathfinder {
             }
         }
         return null;
+    }
+    
+    public static MazeState getClosestGoal (MazeState state, MazeProblem problem) {
+    	if (problem.GOAL_STATES.size() == 0) {
+    		return null;
+    	}
+    	int lowestCost = getHeuristic(state, problem, problem.GOAL_STATES.get(0)) + problem.getCost(state);
+    	MazeState closestGoal = problem.GOAL_STATES.get(0); 
+    	for (int i = 0; i < problem.GOAL_STATES.size(); i++) {
+    		if(lowestCost > getHeuristic(state, problem, problem.GOAL_STATES.get(i)) + problem.getCost(state)) {
+    			lowestCost = getHeuristic(state, problem, problem.GOAL_STATES.get(i)) + problem.getCost(state);
+    			closestGoal = problem.GOAL_STATES.get(i);
+    		}
+    	}
+    	return closestGoal;
     }
 }
 

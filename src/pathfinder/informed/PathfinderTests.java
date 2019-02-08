@@ -177,5 +177,63 @@ public class PathfinderTests {
         assertNull(solution); // Ensure that Pathfinder knows when there's no solution
     }
     
+    @Test
+    public void testPathfinder_t10() {
+        String[] maze = {
+            ".......",
+            ".I.....",
+            ".......",
+            "...K...",
+            "......."
+        };
+        MazeProblem prob = new MazeProblem(maze);
+        ArrayList<String> solution = Pathfinder.solve(prob);
+        assertNull(solution); // Ensure that Pathfinder knows when there's no solution
+    }
+    
+    @Test
+    public void testPathfinder_t11() {
+        String[] maze = {
+            ".......",
+            ".I..G..",
+            ".......",
+            "...K...",
+            "......."
+        };
+        MazeProblem prob = new MazeProblem(maze);
+        ArrayList<String> solution = Pathfinder.solve(prob);
+        int[] result = prob.testSolution(solution);
+        System.out.println(solution.toString());
+        assertEquals(1, result[0]);  // Test that result is a solution
+        assertEquals(7, result[1]); // Ensure that the solution is optimal
+    }
+    
+    @Test
+    public void testPathfinder_t12() {
+        String[] maze = {
+            ".......",
+            ".I.....",
+            ".......",
+            ".......",
+            "......."
+        };
+        MazeProblem prob = new MazeProblem(maze);
+        ArrayList<String> solution = Pathfinder.solve(prob);
+        assertNull(solution); // Ensure that Pathfinder knows when there's no solution
+    }
+    
+    @Test
+    public void testPathfinder_t13() {
+        String[] maze = {
+            "XXXXXXX",
+            "XIXXXXX",
+            "XXXXXXX",
+            "XXXXXXX",
+            "XXXXXXX"
+        };
+        MazeProblem prob = new MazeProblem(maze);
+        ArrayList<String> solution = Pathfinder.solve(prob);
+        assertNull(solution); // Ensure that Pathfinder knows when there's no solution
+    }
     
 }
