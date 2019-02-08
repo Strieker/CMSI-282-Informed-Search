@@ -17,7 +17,7 @@ public class Pathfinder {
      * should such a  path exist, and then another time in order to find the path from the Key State to the nearest
      * Goal State. 
      *
-     * @param A MazeProblem object, to provide the initial maze, the MazeState
+     * @param MazeProblem object, to provide the initial maze, the MazeState
      * of the Key, the Initial, and the list of Goal States, as well as the cost 
      * to get to the current MazeState to the Goal State
      * @return An ArrayList of actions to get from the Initial to the Goal State
@@ -91,7 +91,7 @@ public class Pathfinder {
      * on the Manhattan Distance formula. 
      *
      * @param The MazeState of the current position in the maze, the MazeState of the goal
-     * @return An integer representation of the history
+     * @return integer representation of the history
      */
     private static int getHeuristic(MazeState current, MazeState goal) {
     	return Math.abs(current.col - goal.col) + Math.abs(current.row - goal.row);
@@ -164,7 +164,7 @@ public class Pathfinder {
      * @return An ArrayList of Strings representing actions that lead from the initial to
      * the goal state, of the format: ["R", "R", "L", ...]
      */
-    public static MazeState getClosestGoal (MazeState current, MazeProblem problem) {
+    private static MazeState getClosestGoal (MazeState current, MazeProblem problem) {
     	if (problem.GOAL_STATES.size() == 0) {
     		return null;
     	}
