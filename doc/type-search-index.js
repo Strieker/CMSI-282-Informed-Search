@@ -1,1 +1,1 @@
-typeSearchIndex = [{"p":"pathfinder.informed","l":"MazeProblem"}]
+typeSearchIndex = [{"p":"pathfinder.informed","l":"Pathfinder"}]
