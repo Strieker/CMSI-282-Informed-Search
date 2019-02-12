@@ -13,6 +13,7 @@ public class MazeState {
 	 * represents in the Maze.<br>
 	 * <b>NOTE: Row 0, Column 0 is located at the upper-left-hand corner of the
 	 * maze!</b>
+	 * 
 	 * @param col Integer column number of this state (X coord in a Cartesian plane)
 	 * @param row Integer row number of this state (Y coord in a Cartesian plane)
 	 */
@@ -24,6 +25,7 @@ public class MazeState {
 	/**
 	 * [Mutator] Adds the coordinates of the given other MazeState to this one's;
 	 * useful for computing offsets given in MazeProblem transitions.
+	 * 
 	 * @param other The other MazeState to add to this one.
 	 */
 	public void add(MazeState other) {

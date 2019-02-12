@@ -13,14 +13,15 @@ public class MazeProblem {
 	// -----------------------------------------------------------------------------
 	private String[] maze;
 	private int rows, cols;
-	public final MazeState INITIAL_STATE, KEY_STATE;
-	public ArrayList<MazeState> GOAL_STATES;
+	public final MazeState INITIAL_STATE;
+	public HashSet<MazeState> GOAL_STATES;
+	public HashSet<MazeState> KEY_STATES;
 	private static final Map<String, MazeState> TRANS_MAP = createTransitions();
 
 	/**
 	 * @return Creates the transition map that maps String actions to MazeState
-	 * offsets, of the format: { "U": (0, -1), "D": (0, +1), "L": (-1, 0),
-	 * "R": (+1, 0) }
+	 *         offsets, of the format: { "U": (0, -1), "D": (0, +1), "L": (-1, 0),
+	 *         "R": (+1, 0) }
 	 */
 	private static final Map<String, MazeState> createTransitions() {
 		Map<String, MazeState> result = new HashMap<>();
@@ -36,21 +37,24 @@ public class MazeProblem {
 	/**
 	 * Constructs a new MazeProblem from the given maze; responsible for finding the
 	 * initial and goal states in the maze, and storing in the MazeProblem state.
+	 * 
 	 * @param maze An array of Strings in which characters represent the legal maze
-	 * entities, including:<br>
-	 * 'X': A wall, 'G': A goal, 'I': The initial state, 'M': A mud
-	 * tile, 'K': A key, '.': an open spot For example, a valid maze
-	 * might look like:
-	 * <pre>
-	 * String[] maze = { "XXXXXXX", "X....IX", "X..MXXX", "XGXKX.X", "XXXXXXX" };
-	 * </pre>
+	 *             entities, including:<br>
+	 *             'X': A wall, 'G': A goal, 'I': The initial state, 'M': A mud
+	 *             tile, 'K': A key, '.': an open spot For example, a valid maze
+	 *             might look like:
+	 * 
+	 *             <pre>
+	 *             String[] maze = { "XXXXXXX", "X....IX", "X..MXXX", "XGXKX.X", "XXXXXXX" };
+	 *             </pre>
 	 */
 	MazeProblem(String[] maze) {
 		this.maze = maze;
 		this.rows = maze.length;
 		this.cols = (rows == 0) ? 0 : maze[0].length();
-		MazeState foundInitial = null, foundKey = null;
-		ArrayList<MazeState> foundGoal = new ArrayList<MazeState>();
+		MazeState foundInitial = null;
+		HashSet<MazeState> foundGoal = new HashSet<>();
+		HashSet<MazeState> foundKey = new HashSet<>();
 		for (int row = 0; row < rows; row++) {
 			for (int col = 0; col < cols; col++) {
 				switch (maze[row].charAt(col)) {
@@ -61,7 +65,7 @@ public class MazeProblem {
 					foundGoal.add(new MazeState(col, row));
 					break;
 				case 'K':
-					foundKey = new MazeState(col, row);
+					foundKey.add(new MazeState(col, row));
 					break;
 				case 'M':
 				case '.':
@@ -74,7 +78,7 @@ public class MazeProblem {
 		}
 		GOAL_STATES = foundGoal;
 		INITIAL_STATE = foundInitial;
-		KEY_STATE = foundKey;
+		KEY_STATES = foundKey;
 	}
 
 	// Methods
@@ -82,31 +86,35 @@ public class MazeProblem {
 
 	/**
 	 * Returns whether or not the given state is a Goal state.
+	 * 
 	 * @param state A MazeState (col, row) to test
-	 * @return Boolean of whether or not the given state is a Goal.
+	 * @return Boolean of whether or not the given state is a Goal based on whether
+	 *         or not it is found in the HashSet of Goal States.
 	 */
 	public boolean isGoal(MazeState state) {
 		return GOAL_STATES.contains(state);
 	}
 
 	/**
-	 * Returns whether or not the given state is a Goal state.
+	 * Returns whether or not the given state is a Key state.
+	 * 
 	 * @param state A MazeState (col, row) to test
-	 * @return Boolean of whether or not the given state is a Key.
+	 * @return Boolean of whether or not the given state is a Key based on whether
+	 *         or not it is found in the HashSet of Key States.
 	 */
 	public boolean isKey(MazeState state) {
-		return state.equals(KEY_STATE);
+		return KEY_STATES.contains(state);
 	}
 
 	// Cost Function
 	// -----------------------------------------------------------------------------
 	/**
 	 * Returns cost of an action depending on the type of tile is for the current
-	 * position
-	 * The cost to move to a Goal state is 1 unit, the cost to move to an Initial
-	 * state is 1 unit, the cost to move to a Mud tile is 3 units, the cost to move
-	 * to a wall is not applicable, since it is not possible to move to a wall, and
-	 * the cost to move to a Key state is 1 unit
+	 * position The cost to move to a Goal state is 1 unit, the cost to move to an
+	 * Initial state is 1 unit, the cost to move to a Mud tile is 3 units, the cost
+	 * to move to a wall is not applicable, since it is not possible to move to a
+	 * wall, and the cost to move to a Key state is 1 unit
+	 * 
 	 * @param state A MazeState(col, row) to test
 	 * @return Integer equating to the total cost to move to the given tile
 	 */
@@ -132,11 +140,12 @@ public class MazeProblem {
 	/**
 	 * Returns a map of the states that can be reached from the given input state
 	 * using any of the available actions.
+	 * 
 	 * @param state A MazeState (col, row) representing the current state from which
-	 * actions can be taken
+	 *              actions can be taken
 	 * @return Map A map of actions to the states that they lead to, of the format,
-	 * for current MazeState (c, r):<br>
-	 * { "U": (c, r-1), "D": (c, r+1), "L": (c-1, r), "R": (c+1, r) }
+	 *         for current MazeState (c, r):<br>
+	 *         { "U": (c, r-1), "D": (c, r+1), "L": (c-1, r), "R": (c+1, r) }
 	 */
 	public Map<String, MazeState> getTransitions(MazeState state) {
 		Map<String, MazeState> result = new HashMap<>();
@@ -154,11 +163,12 @@ public class MazeProblem {
 	/**
 	 * Given a possibleSoln, tests to ensure that it is indeed a solution to this
 	 * MazeProblem, as well as returning the cost.
+	 * 
 	 * @param possibleSoln A possible solution to test, which is a list of actions
-	 * of the format: ["U", "D", "D", "L", ...]
+	 *                     of the format: ["U", "D", "D", "L", ...]
 	 * @return A 2-element array of ints of the format [isSoln, cost] where: isSoln
-	 * will be 0 if it is not a solution, and 1 if it is cost will be an
-	 * integer denoting the cost of the given solution to test optimality
+	 *         will be 0 if it is not a solution, and 1 if it is cost will be an
+	 *         integer denoting the cost of the given solution to test optimality
 	 */
 	public int[] testSolution(ArrayList<String> possibleSoln) {
 		MazeState movingState = new MazeState(INITIAL_STATE.col, INITIAL_STATE.row);
